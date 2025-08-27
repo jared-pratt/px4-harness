@@ -1,0 +1,7 @@
+[17:55:03] nominal_hover/i1: connecting...
+[17:55:04] nominal_hover/i1: connected
+[17:55:04] nominal_hover/i1: armed
+[17:55:05] nominal_hover/i1: takeoff to 3.0 m
+[17:55:10] nominal_hover/i1: hold
+[17:55:12] nominal_hover/i1: land
+[17:55:13] nominal_hover/i1: EXPECT final_mode=LAND -> True (got LAND)

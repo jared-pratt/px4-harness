@@ -1,0 +1,226 @@
+[17:20:07] battery_failure_mission/i1: connecting...
+[17:20:08] battery_failure_mission/i1: connected
+[17:20:08] battery_failure_mission/i1: armed
+[17:20:09] battery_failure_mission/i1: takeoff to 30.5 m
+[17:20:14] battery_failure_mission/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x70609447fa60>
+command: /home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3
+args: [b'/home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'-u', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): " module named 'pymavlink'\r\n\r\nYou may need to install it with:\r\n    pip3 install --user pymavlink\r\n\r\n"
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 135263
+child_fd: 16
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[17:20:31] battery_failure_mission/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x7060944b8610>
+command: /home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3
+args: [b'/home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'-u', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): " module named 'pymavlink'\r\n\r\nYou may need to install it with:\r\n    pip3 install --user pymavlink\r\n\r\n"
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 135417
+child_fd: 17
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[17:20:45] battery_failure_mission/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x70609447f7f0>
+command: /home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3
+args: [b'/home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'-u', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): " module named 'pymavlink'\r\n\r\nYou may need to install it with:\r\n    pip3 install --user pymavlink\r\n\r\n"
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 135577
+child_fd: 16
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[17:20:58] battery_failure_mission/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x70609447f9a0>
+command: /home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3
+args: [b'/home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'-u', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): " module named 'pymavlink'\r\n\r\nYou may need to install it with:\r\n    pip3 install --user pymavlink\r\n\r\n"
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 135735
+child_fd: 17
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[17:23:30] battery_failure_mission/i1: connecting...
+[17:23:32] battery_failure_mission/i1: connected
+[17:23:32] battery_failure_mission/i1: armed
+[17:23:33] battery_failure_mission/i1: takeoff to 30.5 m
+[17:23:38] battery_failure_mission/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x7df299077a60>
+command: /home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3
+args: [b'/home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'-u', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): " module named 'pymavlink'\r\n\r\nYou may need to install it with:\r\n    pip3 install --user pymavlink\r\n\r\n"
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 138018
+child_fd: 16
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[17:23:52] battery_failure_mission/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x7df2990b0610>
+command: /home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3
+args: [b'/home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'-u', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): " module named 'pymavlink'\r\n\r\nYou may need to install it with:\r\n    pip3 install --user pymavlink\r\n\r\n"
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 138155
+child_fd: 17
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[17:24:06] battery_failure_mission/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x7df299077a90>
+command: /home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3
+args: [b'/home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'-u', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): " module named 'pymavlink'\r\n\r\nYou may need to install it with:\r\n    pip3 install --user pymavlink\r\n\r\n"
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: 1
+flag_eof: True
+pid: 138288
+child_fd: 16
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[17:24:22] battery_failure_mission/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x7df2990b0f70>
+command: /home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3
+args: [b'/home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'-u', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): " module named 'pymavlink'\r\n\r\nYou may need to install it with:\r\n    pip3 install --user pymavlink\r\n\r\n"
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 138441
+child_fd: 17
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[17:24:32] battery_failure_mission/i1: land
+[17:24:32] battery_failure_mission/i1: EXPECT final_mode=LAND -> True (got LAND)

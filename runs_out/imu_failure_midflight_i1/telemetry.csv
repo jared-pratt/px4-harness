@@ -1,0 +1,2 @@
+t_s,tag,flight_mode,in_air,armed,battery_pct,voltage_v,lat,lon,abs_alt_m,health_gyro_cal,health_accel_cal,health_mag_cal,health_global_pos,health_local_pos,health_home_pos
+0.00,imu_failure_midflight,LAND,False,False,98.000,16.200,37.4121719,-121.9988681,38.096,True,True,True,True,True,True

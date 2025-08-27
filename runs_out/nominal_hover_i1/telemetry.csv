@@ -1,0 +1,2 @@
+t_s,tag,flight_mode,in_air,armed,battery_pct,voltage_v,lat,lon,abs_alt_m,health_gyro_cal,health_accel_cal,health_mag_cal,health_global_pos,health_local_pos,health_home_pos
+0.00,nominal_hover,HOLD,True,True,95.000,16.081,37.4121729,-121.9988671,38.067,True,True,True,True,True,True

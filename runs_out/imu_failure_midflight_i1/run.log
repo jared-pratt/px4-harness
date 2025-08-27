@@ -1,0 +1,32 @@
+[17:55:15] imu_failure_midflight/i1: connecting...
+[17:55:17] imu_failure_midflight/i1: connected
+[17:55:17] imu_failure_midflight/i1: armed
+[17:55:18] imu_failure_midflight/i1: takeoff to 3.0 m
+[17:55:20] imu_failure_midflight/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x7792cf48bd60>
+command: /home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3
+args: [b'/home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'-u', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): " module named 'pymavlink'\r\n\r\nYou may need to install it with:\r\n    pip3 install --user pymavlink\r\n\r\n"
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 150833
+child_fd: 16
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[17:55:23] imu_failure_midflight/i1: land

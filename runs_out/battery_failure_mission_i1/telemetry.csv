@@ -1,0 +1,11 @@
+t_s,tag,flight_mode,in_air,armed,battery_pct,voltage_v,lat,lon,abs_alt_m,health_gyro_cal,health_accel_cal,health_mag_cal,health_global_pos,health_local_pos,health_home_pos
+0.00,battery_failure_mission,HOLD,True,True,95.000,16.080,37.4121730,-121.9988674,38.224,True,True,True,True,True,True
+5.28,battery_failure_mission,TAKEOFF,True,True,85.000,15.900,37.4121715,-121.9988661,44.277,True,True,True,True,True,True
+11.34,battery_failure_mission,TAKEOFF,True,True,75.000,15.720,37.4121728,-121.9988666,56.917,True,True,True,True,True,True
+17.42,battery_failure_mission,TAKEOFF,True,True,65.000,15.540,37.4121729,-121.9988671,67.724,True,True,True,True,True,True
+23.48,battery_failure_mission,HOLD,True,True,55.000,15.360,37.4121732,-121.9988676,68.517,True,True,True,True,True,True
+29.58,battery_failure_mission,HOLD,True,True,50.000,15.300,37.4121734,-121.9988670,68.584,True,True,True,True,True,True
+35.65,battery_failure_mission,HOLD,True,True,50.000,15.300,37.4121729,-121.9988670,68.496,True,True,True,True,True,True
+41.74,battery_failure_mission,HOLD,True,True,50.000,15.300,37.4121732,-121.9988670,68.615,True,True,True,True,True,True
+47.82,battery_failure_mission,HOLD,True,True,50.000,15.300,37.4121730,-121.9988670,68.578,True,True,True,True,True,True
+53.91,battery_failure_mission,HOLD,True,True,50.000,15.300,37.4121730,-121.9988669,68.557,True,True,True,True,True,True
