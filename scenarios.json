@@ -1,0 +1,23 @@
+[
+  {
+    "name": "nominal_hover",
+    "instance": 1,
+    "actions": [
+      {"t": 0, "cmd": "arm"},
+      {"t": 1, "cmd": "takeoff", "alt": 3.0},
+      {"t": 5, "cmd": "hold"},
+      {"t": 8, "cmd": "land"}
+    ],
+    "expect": {"final_mode": "LAND"}
+  },
+  {
+    "name": "imu_fail_midflight",
+    "instance": 1,
+    "actions": [
+      {"t": 0, "cmd": "arm"},
+      {"t": 1, "cmd": "takeoff", "alt": 3.0},
+      {"t": 3, "cmd": "inject_failure", "failure": "imu_off"},
+      {"t": 6, "cmd": "land"}
+    ]
+  }
+]

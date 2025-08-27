@@ -1,0 +1,18 @@
+[16:40:02] nominal_hover/i1: connected
+[16:40:02] nominal_hover/i1: armed
+[16:40:03] nominal_hover/i1: takeoff 3.0m
+[16:40:07] nominal_hover/i1: hold
+[16:40:10] nominal_hover/i1: land
+[16:40:10] nominal_hover/i1: expect final_mode=LAND -> False (got HOLD)
+[16:53:13] nominal_hover/i1: connected
+[16:53:13] nominal_hover/i1: armed
+[16:53:14] nominal_hover/i1: takeoff 3.0m
+[16:53:18] nominal_hover/i1: hold
+[16:53:21] nominal_hover/i1: land
+[16:53:21] nominal_hover/i1: expect final_mode=LAND -> True (got LAND)
+[16:54:01] nominal_hover/i1: connected
+[16:54:01] nominal_hover/i1: armed
+[16:54:02] nominal_hover/i1: takeoff 3.0m
+[16:54:06] nominal_hover/i1: hold
+[16:54:09] nominal_hover/i1: land
+[16:54:09] nominal_hover/i1: expect final_mode=LAND -> True (got LAND)
