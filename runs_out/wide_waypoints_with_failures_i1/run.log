@@ -1,0 +1,73 @@
+[18:13:24] wide_waypoints_with_failures/i1: connecting...
+[18:13:25] wide_waypoints_with_failures/i1: connected
+[18:13:25] wide_waypoints_with_failures/i1: armed
+[18:13:26] wide_waypoints_with_failures/i1: takeoff to 30.5 m
+[18:15:14] wide_waypoints_with_failures/i1: connecting...
+[18:15:16] wide_waypoints_with_failures/i1: connected
+[18:15:16] wide_waypoints_with_failures/i1: armed
+[18:15:17] wide_waypoints_with_failures/i1: takeoff to 30.5 m
+[18:18:44] wide_waypoints_with_failures/i1: connecting...
+[18:18:45] wide_waypoints_with_failures/i1: connected
+[18:18:45] wide_waypoints_with_failures/i1: armed
+[18:18:46] wide_waypoints_with_failures/i1: takeoff to 30.5 m
+[18:18:54] wide_waypoints_with_failures/i1: set_speed ignored: TIMEOUT: 'Timeout'; origin: set_param_int(); params: ('MIS_SPEED', 1210)
+[18:18:55] wide_waypoints_with_failures/i1: goto_offset N400 E0 -> 37.4157663,-121.9988670 alt 35.0
+[18:19:27] wide_waypoints_with_failures/i1: goto_offset N400 E400 -> 37.4171903,-121.9943407 alt 35.0
+[18:20:04] wide_waypoints_with_failures/i1: goto_offset N0 E800 -> 37.4135971,-121.9898168 alt 35.0
+[18:20:20] wide_waypoints_with_failures/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x7abdb359bbe0>
+command: /home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3
+args: [b'/home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'-u', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): 'nk_shell.py [-h] [--baudrate BAUDRATE] [PORT]\r\nmavlink_shell.py: error: unrecognized arguments: -u\r\n'
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 162502
+child_fd: 16
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[18:20:25] wide_waypoints_with_failures/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x7abdb359a350>
+command: /home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3
+args: [b'/home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'-u', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): 'nk_shell.py [-h] [--baudrate BAUDRATE] [PORT]\r\nmavlink_shell.py: error: unrecognized arguments: -u\r\n'
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 162594
+child_fd: 17
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[18:22:31] wide_waypoints_with_failures/i1: goto_offset N-300 E800 -> 37.4094780,-121.9898194 alt 30.0
+[18:22:31] wide_waypoints_with_failures/i1: land
+[18:22:32] wide_waypoints_with_failures/i1: EXPECT final_mode=LAND -> True (got LAND)

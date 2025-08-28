@@ -10,6 +10,8 @@ PX4 SITL test runner:
 import asyncio, json, time, sys, csv, re
 from pathlib import Path
 import pexpect
+import math
+
 
 from mavsdk import System
 from mavsdk.telemetry import FlightMode
@@ -51,6 +53,21 @@ def is_int_like(val: str) -> bool:
 
 def now_hms() -> str:
     return time.strftime('%H:%M:%S')
+
+# meters N/E -> degrees lat/lon at a reference latitude
+def _meters_to_latlon(d_north_m: float, d_east_m: float, ref_lat_deg: float, ref_lon_deg: float):
+    dlat = d_north_m / 111_320.0
+    dlon = d_east_m / (111_320.0 * math.cos(math.radians(ref_lat_deg)))
+    return (ref_lat_deg + dlat, ref_lon_deg + dlon)
+
+async def _get_home(sysobj):
+    # Try home first, then fall back to current position
+    async for h in sysobj.telemetry.home():
+        return h
+    async for p in sysobj.telemetry.position():
+        return p
+    return None
+
 
 # ===================== Telemetry logging =====================
 
@@ -144,6 +161,9 @@ async def telemetry_logger(sysobj: System, csv_path: Path, stop_evt: asyncio.Eve
             await asyncio.sleep(0.20)
     finally:
         f.close()
+
+
+
 
 # ===================== Shell / PXH actions =====================
 
@@ -241,6 +261,47 @@ async def do_action(sysobj: System, action: dict, px4_dir: str, instance: int, l
 
     elif cmd == "inject_failure":
         await pxh_inject_failure(px4_dir, instance, action["failure"], log, out_dir)
+
+    elif cmd == "set_speed":
+        # Max horizontal speed (m/s). Older MAVSDK may not have set_maximum_speed.
+        spd = float(action["mps"])
+        try:
+            setter = getattr(sysobj.action, "set_maximum_speed", None)
+            if setter:
+                await setter(spd)
+                log(f"set speed {spd} m/s via MAVSDK")
+            else:
+                # Fallback via PX4 params:
+                # MPC_XY_CRUISE / MPC_XY_VEL_MAX are m/s; MIS_SPEED is cm/s for missions
+                await sysobj.param.set_param_float("MPC_XY_CRUISE", spd)
+                await sysobj.param.set_param_float("MPC_XY_VEL_MAX", spd)
+                await sysobj.param.set_param_int("MIS_SPEED", int(spd * 100))
+                log(f"set speed via params: MPC_XY_CRUISE/MPC_XY_VEL_MAX={spd} m/s, MIS_SPEED={int(spd*100)} cm/s")
+        except Exception as e:
+            log(f"set_speed ignored: {e}")
+
+
+    elif cmd == "goto_offset":
+        # fly to a point offset (meters) from the home/current lat/lon
+        home = await _get_home(sysobj)
+        if not home:
+            log("goto_offset: no home/pos yet")
+            return
+        lat, lon = _meters_to_latlon(float(action["north_m"]), float(action["east_m"]),
+                                     home.latitude_deg, home.longitude_deg)
+        alt = float(action.get("alt", 30.0))
+        yaw = float(action.get("yaw", 0.0))
+        await sysobj.action.goto_location(lat, lon, alt, yaw)
+        log(f"goto_offset N{action['north_m']} E{action['east_m']} -> {lat:.7f},{lon:.7f} alt {alt}")
+
+    elif cmd == "goto_abs":
+        # absolute WGS84 destination
+        lat = float(action["lat"]); lon = float(action["lon"])
+        alt = float(action.get("alt", 30.0))
+        yaw = float(action.get("yaw", 0.0))
+        await sysobj.action.goto_location(lat, lon, alt, yaw)
+        log(f"goto_abs {lat:.7f},{lon:.7f} alt {alt} yaw {yaw}")
+
 
     else:
         log(f"UNKNOWN action {cmd}")

@@ -1,57 +1,21 @@
 [
   {
-    "name": "nominal_hover",
+    "name": "wide_waypoints_with_failures",
     "instance": 1,
     "actions": [
       { "t": 0.0,  "cmd": "arm" },
-      { "t": 1.0,  "cmd": "takeoff", "alt": 3.0 },
-      { "t": 6.0,  "cmd": "hold" },
-      { "t": 8.0,  "cmd": "land" }
+      { "t": 1.0,  "cmd": "takeoff", "alt": 30.5 },
+
+      { "t": 7.0,  "cmd": "goto_offset", "north_m": 400,  "east_m":   0, "alt": 35 },
+      { "t": 47.0, "cmd": "goto_offset", "north_m": 400,  "east_m": 400, "alt": 35 },
+      { "t": 92.0, "cmd": "goto_offset", "north_m":   0,  "east_m": 800, "alt": 35 },
+
+      { "t": 140.0, "cmd": "inject_failure", "failure": "battery_low" },
+      { "t": 145.0, "cmd": "inject_failure", "failure": "imu_off" },
+
+      { "t": 150.0, "cmd": "goto_offset", "north_m": -300, "east_m": 800, "alt": 30 },
+      { "t": 200.0, "cmd": "land" }
     ],
     "expect": { "final_mode": "LAND" }
-  },
-
-  {
-    "name": "imu_failure_midflight",
-    "instance": 1,
-    "actions": [
-      { "t": 0.0,  "cmd": "arm" },
-      { "t": 1.0,  "cmd": "takeoff", "alt": 3.0 },
-      { "t": 3.0,  "cmd": "inject_failure", "failure": "imu_off" },
-      { "t": 6.0,  "cmd": "land" }
-    ]
-  },
-
-  {
-    "name": "gps_loss_then_recover",
-    "instance": 1,
-    "actions": [
-      { "t": 0.0,  "cmd": "arm" },
-      { "t": 1.0,  "cmd": "takeoff", "alt": 4.0 },
-      { "t": 3.0,  "cmd": "inject_failure", "failure": "gps_off" },
-      { "t": 5.5,  "cmd": "pxh", "command": "failure gps on" },
-      { "t": 9.0,  "cmd": "land" }
-    ]
-  },
-
-  {
-    "name": "battery_low_response",
-    "instance": 1,
-    "actions": [
-      { "t": 0.0,  "cmd": "arm" },
-      { "t": 1.0,  "cmd": "takeoff", "alt": 2.5 },
-      { "t": 2.0,  "cmd": "inject_failure", "failure": "battery_low" },
-      { "t": 7.0,  "cmd": "land" }
-    ]
-  },
-
-  {
-    "name": "pxh_listener_snapshot",
-    "instance": 1,
-    "actions": [
-      { "t": 0.0,  "cmd": "pxh", "command": "listener vehicle_status" },
-      { "t": 0.5,  "cmd": "pxh", "command": "commander check" },
-      { "t": 1.0,  "cmd": "pxh", "command": "uorb top" }
-    ]
   }
 ]

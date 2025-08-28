@@ -1,0 +1,17 @@
+t_s,tag,flight_mode,in_air,armed,battery_pct,voltage_v,lat,lon,abs_alt_m,health_gyro_cal,health_accel_cal,health_mag_cal,health_global_pos,health_local_pos,health_home_pos
+0.00,wide_waypoints_with_failures,HOLD,True,True,95.000,16.080,37.4121731,-121.9988674,38.085,True,True,True,True,True,True
+5.25,wide_waypoints_with_failures,TAKEOFF,True,True,85.000,15.900,37.4121720,-121.9988667,44.607,True,True,True,True,True,True
+11.33,wide_waypoints_with_failures,HOLD,True,True,75.000,15.720,37.4125221,-121.9988658,46.949,True,True,True,True,True,True
+17.40,wide_waypoints_with_failures,HOLD,True,True,65.000,15.540,37.4131619,-121.9988661,44.634,True,True,True,True,True,True
+23.46,wide_waypoints_with_failures,HOLD,True,True,55.000,15.360,37.4136017,-121.9988657,42.941,True,True,True,True,True,True
+29.53,wide_waypoints_with_failures,HOLD,True,True,80.000,16.200,37.4135969,-121.9988647,43.175,True,True,True,True,True,True
+35.58,wide_waypoints_with_failures,HOLD,False,False,100.000,16.200,37.4135963,-121.9988648,43.086,True,True,True,True,True,True
+41.62,wide_waypoints_with_failures,HOLD,False,False,100.000,16.200,37.4135963,-121.9988645,43.104,True,True,True,True,True,True
+47.65,wide_waypoints_with_failures,HOLD,False,False,100.000,16.200,37.4135962,-121.9988652,43.075,True,True,True,True,True,True
+53.68,wide_waypoints_with_failures,HOLD,False,False,100.000,16.200,37.4135962,-121.9988648,43.121,True,True,True,True,True,True
+59.71,wide_waypoints_with_failures,HOLD,False,False,100.000,16.200,37.4135966,-121.9988651,43.131,True,True,True,True,True,True
+65.74,wide_waypoints_with_failures,HOLD,False,False,100.000,16.200,37.4135966,-121.9988646,43.108,True,True,True,True,True,True
+71.77,wide_waypoints_with_failures,HOLD,False,False,100.000,16.200,37.4135964,-121.9988650,43.130,True,True,True,True,True,True
+77.80,wide_waypoints_with_failures,HOLD,False,False,100.000,16.200,37.4135962,-121.9988652,43.072,True,True,True,True,True,True
+83.83,wide_waypoints_with_failures,HOLD,False,False,100.000,16.200,37.4135962,-121.9988650,43.079,True,True,True,True,True,True
+89.86,wide_waypoints_with_failures,HOLD,False,False,99.000,16.200,37.4121728,-121.9988672,38.141,True,True,True,False,True,True
