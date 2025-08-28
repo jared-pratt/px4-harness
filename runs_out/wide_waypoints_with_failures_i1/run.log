@@ -71,3 +71,67 @@ searcher: searcher_string:
 [18:22:31] wide_waypoints_with_failures/i1: goto_offset N-300 E800 -> 37.4094780,-121.9898194 alt 30.0
 [18:22:31] wide_waypoints_with_failures/i1: land
 [18:22:32] wide_waypoints_with_failures/i1: EXPECT final_mode=LAND -> True (got LAND)
+[14:38:17] wide_waypoints_with_failures/i1: connecting...
+[14:38:19] wide_waypoints_with_failures/i1: connected
+[14:38:19] wide_waypoints_with_failures/i1: armed
+[14:38:20] wide_waypoints_with_failures/i1: takeoff to 46.0 m
+[14:38:28] wide_waypoints_with_failures/i1: goto_offset N400 E0 -> 37.4157662,-121.9988669 alt 88.1 (rel_alt_m)
+[14:39:08] wide_waypoints_with_failures/i1: goto_offset N400 E400 -> 37.4157662,-121.9943430 alt 88.1 (rel_alt_m)
+[14:39:49] wide_waypoints_with_failures/i1: goto_offset N0 E800 -> 37.4121730,-121.9898192 alt 88.1 (rel_alt_m)
+[14:40:29] wide_waypoints_with_failures/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x7256a268bdf0>
+command: /home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3
+args: [b'/home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'udp:127.0.0.1:14541']
+buffer (last 100 chars): ''
+before (last 100 chars): '60, in __init__\r\n    self.port.bind((a[0], int(a[1])))\r\nOSError: [Errno 98] Address already in use\r\n'
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 237144
+child_fd: 16
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[14:40:34] wide_waypoints_with_failures/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x7256a268a8f0>
+command: /home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3
+args: [b'/home/iotrust/ResearchFall2025/Simulators/px4-harness/.venv/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'udp:127.0.0.1:14541']
+buffer (last 100 chars): ''
+before (last 100 chars): '60, in __init__\r\n    self.port.bind((a[0], int(a[1])))\r\nOSError: [Errno 98] Address already in use\r\n'
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 237224
+child_fd: 17
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[14:40:39] wide_waypoints_with_failures/i1: goto_offset N-300 E800 -> 37.4094781,-121.9898192 alt 83.1 (rel_alt_m)
+[14:41:29] wide_waypoints_with_failures/i1: land
+[14:41:30] wide_waypoints_with_failures/i1: EXPECT final_mode=LAND -> True (got LAND)

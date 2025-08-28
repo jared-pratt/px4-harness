@@ -27,9 +27,11 @@ def px4_shell(px4_dir: str, instance: int, timeout_s: float = 20.0) -> pexpect.s
     """Open a PX4 pxh shell via mavlink_shell.py (binds to UDP port)"""
     tools = Path(px4_dir) / "Tools" / "mavlink_shell.py"
     port = px4_port_for_instance(instance)
-    sh = pexpect.spawn(f"python3 {tools} -u {port}", encoding="utf-8", timeout=timeout_s)
+    py_exec = "/usr/bin/python3"  # avoid venv python (pymavlink missing there)
+    sh = pexpect.spawn(f"{py_exec} {tools} {port}", encoding="utf-8", timeout=timeout_s)
     sh.expect_exact("pxh>")
     return sh
+
 
 # Some common “failure” shorthands. You can add more by running `failure -h` in pxh.
 FAIL_MAP = {
@@ -192,8 +194,50 @@ async def pxh_inject_failure(px4_dir: str, instance: int, key: str, log, out_dir
     if not cmd:
         log(f"unknown failure key: {key}")
         return
-    out = out_dir / f"pxh_{key}.txt"
-    await pxh_run(px4_dir, instance, cmd, log, out_path=out)
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / f"pxh_{key}.txt"
+
+    try:
+        sh = px4_shell(px4_dir, instance)
+        # 1) inject the failure
+        sh.sendline(cmd)
+        sh.expect("pxh>")
+        fail_out = sh.before
+
+        # 2) show commander status
+        sh.sendline("commander check")
+        sh.expect("pxh>")
+        chk_out = sh.before
+
+        # 3) show vehicle_status once
+        sh.sendline("listener vehicle_status -n 1")
+        sh.expect("pxh>")
+        stat_out = sh.before
+
+        # (optional) IMU snapshot if relevant
+        if "imu" in key:
+            sh.sendline("listener sensor_combined -n 1")
+            sh.expect("pxh>")
+            imu_out = sh.before
+        else:
+            imu_out = ""
+
+        sh.close(force=True)
+
+        blob = (
+            f"$ {cmd}\n{fail_out}\n\n"
+            f"$ commander check\n{chk_out}\n\n"
+            f"$ listener vehicle_status -n 1\n{stat_out}\n\n"
+            + (f"$ listener sensor_combined -n 1\n{imu_out}\n" if imu_out else "")
+        )
+        out_path.write_text(blob)
+        # print everything to the console too (so you *see* it live)
+        log(f"=== pxh output for {key} ===\n{blob}")
+
+    except Exception as e:
+        log(f"pxh error: {e}")
+
 
 # ===================== MAVSDK actions =====================
 
@@ -282,25 +326,36 @@ async def do_action(sysobj: System, action: dict, px4_dir: str, instance: int, l
 
 
     elif cmd == "goto_offset":
-        # fly to a point offset (meters) from the home/current lat/lon
         home = await _get_home(sysobj)
         if not home:
             log("goto_offset: no home/pos yet")
             return
         lat, lon = _meters_to_latlon(float(action["north_m"]), float(action["east_m"]),
-                                     home.latitude_deg, home.longitude_deg)
-        alt = float(action.get("alt", 30.0))
+                                    home.latitude_deg, home.longitude_deg)
+
+        if "rel_alt_m" in action:
+            alt = float(home.absolute_altitude_m) + float(action["rel_alt_m"])
+        else:
+            alt = float(action.get("alt", float(home.absolute_altitude_m)))
+
         yaw = float(action.get("yaw", 0.0))
         await sysobj.action.goto_location(lat, lon, alt, yaw)
-        log(f"goto_offset N{action['north_m']} E{action['east_m']} -> {lat:.7f},{lon:.7f} alt {alt}")
+        log(f"goto_offset N{action['north_m']} E{action['east_m']} -> {lat:.7f},{lon:.7f} alt {alt:.2f} (AMSL)")
+
 
     elif cmd == "goto_abs":
-        # absolute WGS84 destination
+        # Absolute WGS84 destination
         lat = float(action["lat"]); lon = float(action["lon"])
-        alt = float(action.get("alt", 30.0))
+        home = await _get_home(sysobj)
+        if "rel_alt_m" in action and home:
+            alt_amsl = home.absolute_altitude_m + float(action["rel_alt_m"])
+            source = "rel_alt_m"
+        else:
+            alt_amsl = float(action.get("alt", 30.0))
+            source = "alt(AMSL)"
         yaw = float(action.get("yaw", 0.0))
-        await sysobj.action.goto_location(lat, lon, alt, yaw)
-        log(f"goto_abs {lat:.7f},{lon:.7f} alt {alt} yaw {yaw}")
+        await sysobj.action.goto_location(lat, lon, alt_amsl, yaw)
+        log(f"goto_abs {lat:.7f},{lon:.7f} alt {alt_amsl:.1f} ({source})")
 
 
     else:

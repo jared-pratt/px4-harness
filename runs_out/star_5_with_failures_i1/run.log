@@ -1,0 +1,70 @@
+[15:09:58] star_5_with_failures/i1: connecting...
+[15:10:00] star_5_with_failures/i1: connected
+[15:10:00] star_5_with_failures/i1: armed
+[15:10:01] star_5_with_failures/i1: takeoff to 46.0 m
+[15:10:08] star_5_with_failures/i1: goto_offset N30.0 E0.0 -> 37.4124424,-121.9988673 alt 84.12 (AMSL)
+[15:10:16] star_5_with_failures/i1: goto_offset N0.0 E0.0 -> 37.4121729,-121.9988673 alt 84.12 (AMSL)
+[15:10:24] star_5_with_failures/i1: goto_offset N-24.271 E17.634 -> 37.4119549,-121.9986679 alt 84.12 (AMSL)
+[15:10:34] star_5_with_failures/i1: goto_offset N0.0 E0.0 -> 37.4121729,-121.9988673 alt 84.12 (AMSL)
+[15:10:36] star_5_with_failures/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x7aa95e63f7f0>
+command: /usr/bin/python3
+args: [b'/usr/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): "SerialException: [Errno 2] could not open port 14541: [Errno 2] No such file or directory: '14541'\r\n"
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 248356
+child_fd: 16
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[15:10:42] star_5_with_failures/i1: goto_offset N9.271 E-28.532 -> 37.4122562,-121.9991900 alt 84.12 (AMSL)
+[15:10:52] star_5_with_failures/i1: goto_offset N0.0 E0.0 -> 37.4121729,-121.9988673 alt 84.12 (AMSL)
+[15:10:54] star_5_with_failures/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x7aa95e67c400>
+command: /usr/bin/python3
+args: [b'/usr/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): "SerialException: [Errno 2] could not open port 14541: [Errno 2] No such file or directory: '14541'\r\n"
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 248565
+child_fd: 17
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[15:11:00] star_5_with_failures/i1: goto_offset N9.271 E28.532 -> 37.4122562,-121.9985446 alt 84.12 (AMSL)
+[15:11:11] star_5_with_failures/i1: goto_offset N0.0 E0.0 -> 37.4121729,-121.9988673 alt 84.12 (AMSL)
+[15:11:19] star_5_with_failures/i1: goto_offset N-24.271 E-17.634 -> 37.4119549,-121.9990667 alt 84.12 (AMSL)
+[15:11:29] star_5_with_failures/i1: goto_offset N0.0 E0.0 -> 37.4121729,-121.9988673 alt 84.12 (AMSL)
+[15:11:34] star_5_with_failures/i1: land
+[15:11:34] star_5_with_failures/i1: EXPECT final_mode=LAND -> False (got HOLD)

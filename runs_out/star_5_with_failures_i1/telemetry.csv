@@ -1,0 +1,17 @@
+t_s,tag,flight_mode,in_air,armed,battery_pct,voltage_v,lat,lon,abs_alt_m,health_gyro_cal,health_accel_cal,health_mag_cal,health_global_pos,health_local_pos,health_home_pos
+0.00,star_5_with_failures,HOLD,True,True,95.000,16.080,37.4121731,-121.9988673,38.114,True,True,True,True,True,True
+5.25,star_5_with_failures,TAKEOFF,True,True,85.000,15.900,37.4121952,-121.9988734,46.324,True,True,True,True,True,True
+11.32,star_5_with_failures,HOLD,True,True,75.000,15.720,37.4123108,-121.9988667,63.344,True,True,True,True,True,True
+17.39,star_5_with_failures,HOLD,True,True,65.000,15.540,37.4122096,-121.9988675,80.378,True,True,True,True,True,True
+23.44,star_5_with_failures,HOLD,True,True,58.000,15.420,37.4121572,-121.9988410,83.217,True,True,True,True,True,True
+27.48,star_5_with_failures,HOLD,True,True,50.000,15.300,37.4119607,-121.9986742,84.095,True,True,True,True,True,True
+33.54,star_5_with_failures,HOLD,True,True,50.000,15.300,37.4120873,-121.9987867,84.148,True,True,True,True,True,True
+39.61,star_5_with_failures,HOLD,True,True,50.000,15.300,37.4121774,-121.9989033,84.179,True,True,True,True,True,True
+45.69,star_5_with_failures,HOLD,True,True,50.000,15.300,37.4122541,-121.9991826,84.149,True,True,True,True,True,True
+51.76,star_5_with_failures,HOLD,True,True,50.000,15.300,37.4122114,-121.9990119,84.153,True,True,True,True,True,True
+57.84,star_5_with_failures,HOLD,True,True,50.000,15.300,37.4121853,-121.9988399,84.194,True,True,True,True,True,True
+63.93,star_5_with_failures,HOLD,True,True,50.000,15.300,37.4122539,-121.9985529,84.142,True,True,True,True,True,True
+69.99,star_5_with_failures,HOLD,True,True,50.000,15.300,37.4122102,-121.9987219,84.144,True,True,True,True,True,True
+76.06,star_5_with_failures,HOLD,True,True,50.000,15.300,37.4121457,-121.9988836,84.202,True,True,True,True,True,True
+82.12,star_5_with_failures,HOLD,True,True,50.000,15.300,37.4119613,-121.9990616,84.152,True,True,True,True,True,True
+88.18,star_5_with_failures,HOLD,True,True,50.000,15.300,37.4120867,-121.9989494,84.145,True,True,True,True,True,True

@@ -1,20 +1,36 @@
 [
   {
-    "name": "wide_waypoints_with_failures",
+    "name": "star_5_with_failures",
     "instance": 1,
     "actions": [
       { "t": 0.0,  "cmd": "arm" },
-      { "t": 1.0,  "cmd": "takeoff", "alt": 30.5 },
+      { "t": 1.0,  "cmd": "takeoff", "alt": 46.0 },
 
-      { "t": 7.0,  "cmd": "goto_offset", "north_m": 400,  "east_m":   0, "alt": 35 },
-      { "t": 47.0, "cmd": "goto_offset", "north_m": 400,  "east_m": 400, "alt": 35 },
-      { "t": 92.0, "cmd": "goto_offset", "north_m":   0,  "east_m": 800, "alt": 35 },
 
-      { "t": 140.0, "cmd": "inject_failure", "failure": "battery_low" },
-      { "t": 145.0, "cmd": "inject_failure", "failure": "imu_off" },
+      { "t": 8.0,  "cmd": "goto_offset", "north_m": 30.0,   "east_m": 0.0,    "rel_alt_m": 46.0 },
+      { "t": 16.0, "cmd": "goto_offset", "north_m": 0.0,    "east_m": 0.0,    "rel_alt_m": 46.0 },
 
-      { "t": 150.0, "cmd": "goto_offset", "north_m": -300, "east_m": 800, "alt": 30 },
-      { "t": 200.0, "cmd": "land" }
+      { "t": 24.0, "cmd": "goto_offset", "north_m": -24.271, "east_m": 17.634, "rel_alt_m": 46.0 },
+      { "t": 34.0, "cmd": "goto_offset", "north_m": 0.0,     "east_m": 0.0,    "rel_alt_m": 46.0 },
+
+      { "t": 36.0, "cmd": "inject_failure", "failure": "battery_low" },
+
+
+      { "t": 42.0, "cmd": "goto_offset", "north_m": 9.271,  "east_m": -28.532, "rel_alt_m": 46.0 },
+      { "t": 52.0, "cmd": "goto_offset", "north_m": 0.0,    "east_m": 0.0,     "rel_alt_m": 46.0 },
+
+
+      { "t": 54.0, "cmd": "inject_failure", "failure": "imu_off" },
+
+
+      { "t": 60.0, "cmd": "goto_offset", "north_m": 9.271,  "east_m": 28.532,  "rel_alt_m": 46.0 },
+      { "t": 70.0, "cmd": "goto_offset", "north_m": 0.0,    "east_m": 0.0,     "rel_alt_m": 46.0 },
+
+
+      { "t": 78.0, "cmd": "goto_offset", "north_m": -24.271, "east_m": -17.634, "rel_alt_m": 46.0 },
+      { "t": 88.0, "cmd": "goto_offset", "north_m": 0.0,     "east_m": 0.0,     "rel_alt_m": 46.0 },
+
+      { "t": 94.0, "cmd": "land" }
     ],
     "expect": { "final_mode": "LAND" }
   }
