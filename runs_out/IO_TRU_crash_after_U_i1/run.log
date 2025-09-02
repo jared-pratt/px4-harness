@@ -1,0 +1,190 @@
+[16:50:29] IO_TRU_crash_after_U/i1: connecting...
+[16:50:30] IO_TRU_crash_after_U/i1: connected
+[16:50:30] IO_TRU_crash_after_U/i1: armed
+[16:50:31] IO_TRU_crash_after_U/i1: takeoff to 46.0 m
+[16:50:38] IO_TRU_crash_after_U/i1: goto_offset N15.0 E0.0 -> 37.4120029,-121.9952864 alt 46.00 (AMSL)
+[16:50:44] IO_TRU_crash_after_U/i1: goto_offset N-15.0 E0.0 -> 37.4117335,-121.9952864 alt 46.00 (AMSL)
+[16:50:48] IO_TRU_crash_after_U/i1: goto_offset N-15.0 E15.0 -> 37.4117335,-121.9951168 alt 46.00 (AMSL)
+[16:50:52] IO_TRU_crash_after_U/i1: goto_offset N-15.0 E33.0 -> 37.4117335,-121.9949132 alt 46.00 (AMSL)
+[16:50:55] IO_TRU_crash_after_U/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x79279fa4b970>
+command: /usr/bin/python3
+args: [b'/usr/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): "SerialException: [Errno 2] could not open port 14541: [Errno 2] No such file or directory: '14541'\r\n"
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 288199
+child_fd: 16
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[16:50:55] IO_TRU_crash_after_U/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x79279fa80400>
+command: /usr/bin/python3
+args: [b'/usr/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): "SerialException: [Errno 2] could not open port 14541: [Errno 2] No such file or directory: '14541'\r\n"
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 288250
+child_fd: 17
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[16:50:56] IO_TRU_crash_after_U/i1: goto_offset N15.0 E33.0 -> 37.4120029,-121.9949132 alt 46.00 (AMSL)
+[16:51:00] IO_TRU_crash_after_U/i1: goto_offset N15.0 E15.0 -> 37.4120029,-121.9951168 alt 46.00 (AMSL)
+[16:51:04] IO_TRU_crash_after_U/i1: goto_offset N-15.0 E15.0 -> 37.4117335,-121.9951168 alt 46.00 (AMSL)
+[16:51:08] IO_TRU_crash_after_U/i1: goto_offset N15.0 E15.0 -> 37.4120029,-121.9951168 alt 46.00 (AMSL)
+[16:51:12] IO_TRU_crash_after_U/i1: goto_offset N15.0 E39.0 -> 37.4120029,-121.9948453 alt 46.00 (AMSL)
+[16:51:16] IO_TRU_crash_after_U/i1: goto_offset N15.0 E57.0 -> 37.4120029,-121.9946418 alt 46.00 (AMSL)
+[16:51:22] IO_TRU_crash_after_U/i1: goto_offset N-15.0 E48.0 -> 37.4117335,-121.9947435 alt 46.00 (AMSL)
+[16:51:26] IO_TRU_crash_after_U/i1: goto_offset N-15.0 E63.0 -> 37.4117335,-121.9945739 alt 46.00 (AMSL)
+[16:51:30] IO_TRU_crash_after_U/i1: goto_offset N15.0 E63.0 -> 37.4120029,-121.9945739 alt 46.00 (AMSL)
+[16:51:34] IO_TRU_crash_after_U/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x79279fa4b3d0>
+command: /usr/bin/python3
+args: [b'/usr/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): "SerialException: [Errno 2] could not open port 14541: [Errno 2] No such file or directory: '14541'\r\n"
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 288679
+child_fd: 16
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[16:51:34] IO_TRU_crash_after_U/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x79279fa4b520>
+command: /usr/bin/python3
+args: [b'/usr/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): "SerialException: [Errno 2] could not open port 14541: [Errno 2] No such file or directory: '14541'\r\n"
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 288741
+child_fd: 17
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[16:51:36] IO_TRU_crash_after_U/i1: goto_offset N15.0 E81.0 -> 37.4120029,-121.9943703 alt 46.00 (AMSL)
+[16:51:40] IO_TRU_crash_after_U/i1: goto_offset N0.0 E81.0 -> 37.4118682,-121.9943703 alt 46.00 (AMSL)
+[16:51:44] IO_TRU_crash_after_U/i1: goto_offset N0.0 E63.0 -> 37.4118682,-121.9945739 alt 46.00 (AMSL)
+[16:51:48] IO_TRU_crash_after_U/i1: goto_offset N-15.0 E81.0 -> 37.4117335,-121.9943703 alt 46.00 (AMSL)
+[16:51:52] IO_TRU_crash_after_U/i1: goto_offset N0.0 E84.0 -> 37.4118682,-121.9943364 alt 46.00 (AMSL)
+[16:51:55] IO_TRU_crash_after_U/i1: goto_offset N15.0 E87.0 -> 37.4120029,-121.9943025 alt 46.00 (AMSL)
+[16:51:57] IO_TRU_crash_after_U/i1: goto_offset N-15.0 E87.0 -> 37.4117335,-121.9943025 alt 46.00 (AMSL)
+[16:52:01] IO_TRU_crash_after_U/i1: goto_offset N-15.0 E105.0 -> 37.4117335,-121.9940989 alt 46.00 (AMSL)
+[16:52:05] IO_TRU_crash_after_U/i1: goto_offset N15.0 E105.0 -> 37.4120029,-121.9940989 alt 46.00 (AMSL)
+[16:52:07] IO_TRU_crash_after_U/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x79279fa80ca0>
+command: /usr/bin/python3
+args: [b'/usr/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): "SerialException: [Errno 2] could not open port 14541: [Errno 2] No such file or directory: '14541'\r\n"
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: 1
+flag_eof: True
+pid: 289135
+child_fd: 18
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[16:52:08] IO_TRU_crash_after_U/i1: pxh error: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x79279fa4af50>
+command: /usr/bin/python3
+args: [b'/usr/bin/python3', b'/home/iotrust/ResearchFall2025/Simulators/PX4-Autopilot/Tools/mavlink_shell.py', b'14541']
+buffer (last 100 chars): ''
+before (last 100 chars): "SerialException: [Errno 2] could not open port 14541: [Errno 2] No such file or directory: '14541'\r\n"
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: True
+pid: 289197
+child_fd: 16
+closed: False
+timeout: 20.0
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_string:
+    0: 'pxh>'
+[16:52:30] IO_TRU_crash_after_U/i1: land
+[16:52:31] IO_TRU_crash_after_U/i1: EXPECT final_mode=LAND -> True (got LAND)

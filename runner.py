@@ -309,7 +309,7 @@ async def do_action(sysobj: System, action: dict, px4_dir: str, instance: int, l
     elif cmd == "set_speed":
         # Max horizontal speed (m/s). Older MAVSDK may not have set_maximum_speed.
         spd = float(action["mps"])
-        try:
+        try:  
             setter = getattr(sysobj.action, "set_maximum_speed", None)
             if setter:
                 await setter(spd)

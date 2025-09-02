@@ -1,36 +1,48 @@
 [
   {
-    "name": "star_5_with_failures",
+    "name": "IO_with_all_failures",
     "instance": 1,
     "actions": [
       { "t": 0.0,  "cmd": "arm" },
       { "t": 1.0,  "cmd": "takeoff", "alt": 46.0 },
 
+    
+      { "t": 6.0,  "cmd": "goto_offset", "north_m":  12.0, "east_m": -23.0, "alt": 46.0 },  
+      { "t": 12.0, "cmd": "goto_offset", "north_m":  12.0, "east_m":  -7.0, "alt": 46.0 },  
+      { "t": 14.0, "cmd": "inject_failure", "failure": "gyro_off" },
+      { "t": 15.0, "cmd": "pxh", "command": "commander check" },
 
-      { "t": 8.0,  "cmd": "goto_offset", "north_m": 30.0,   "east_m": 0.0,    "rel_alt_m": 46.0 },
-      { "t": 16.0, "cmd": "goto_offset", "north_m": 0.0,    "east_m": 0.0,    "rel_alt_m": 46.0 },
+      { "t": 18.0, "cmd": "goto_offset", "north_m":  12.0, "east_m": -15.0, "alt": 46.0 },  
+      { "t": 22.0, "cmd": "goto_offset", "north_m": -12.0, "east_m": -15.0, "alt": 46.0 },  
+      { "t": 24.0, "cmd": "inject_failure", "failure": "accel_off" },
+      { "t": 25.0, "cmd": "pxh", "command": "commander check" },
 
-      { "t": 24.0, "cmd": "goto_offset", "north_m": -24.271, "east_m": 17.634, "rel_alt_m": 46.0 },
-      { "t": 34.0, "cmd": "goto_offset", "north_m": 0.0,     "east_m": 0.0,    "rel_alt_m": 46.0 },
+      { "t": 28.0, "cmd": "goto_offset", "north_m": -12.0, "east_m": -23.0, "alt": 46.0 },  
+      { "t": 32.0, "cmd": "goto_offset", "north_m": -12.0, "east_m":  -7.0, "alt": 46.0 },  
+      { "t": 34.0, "cmd": "inject_failure", "failure": "battery_low" },
+      { "t": 35.0, "cmd": "pxh", "command": "commander check" },
 
-      { "t": 36.0, "cmd": "inject_failure", "failure": "battery_low" },
-
-
-      { "t": 42.0, "cmd": "goto_offset", "north_m": 9.271,  "east_m": -28.532, "rel_alt_m": 46.0 },
-      { "t": 52.0, "cmd": "goto_offset", "north_m": 0.0,    "east_m": 0.0,     "rel_alt_m": 46.0 },
-
-
-      { "t": 54.0, "cmd": "inject_failure", "failure": "imu_off" },
-
-
-      { "t": 60.0, "cmd": "goto_offset", "north_m": 9.271,  "east_m": 28.532,  "rel_alt_m": 46.0 },
-      { "t": 70.0, "cmd": "goto_offset", "north_m": 0.0,    "east_m": 0.0,     "rel_alt_m": 46.0 },
+      { "t": 38.0, "cmd": "goto_offset", "north_m": -12.0, "east_m":   7.0, "alt": 46.0 },  
+      { "t": 40.0, "cmd": "inject_failure", "failure": "baro_off" },
+      { "t": 41.0, "cmd": "pxh", "command": "commander check" },
 
 
-      { "t": 78.0, "cmd": "goto_offset", "north_m": -24.271, "east_m": -17.634, "rel_alt_m": 46.0 },
-      { "t": 88.0, "cmd": "goto_offset", "north_m": 0.0,     "east_m": 0.0,     "rel_alt_m": 46.0 },
+      { "t": 44.0, "cmd": "goto_offset", "north_m":  12.0, "east_m":   7.0, "alt": 46.0 },  
+      { "t": 48.0, "cmd": "inject_failure", "failure": "mag_off" },
+      { "t": 49.0, "cmd": "pxh", "command": "commander check" },
 
-      { "t": 94.0, "cmd": "land" }
+      { "t": 52.0, "cmd": "goto_offset", "north_m":  12.0, "east_m":  23.0, "alt": 46.0 },  
+      { "t": 56.0, "cmd": "inject_failure", "failure": "gps_off" },
+      { "t": 57.0, "cmd": "pxh", "command": "commander check" },
+
+      { "t": 60.0, "cmd": "goto_offset", "north_m": -12.0, "east_m":  23.0, "alt": 46.0 },  
+      { "t": 64.0, "cmd": "inject_failure", "failure": "imu_off" },
+      { "t": 65.0, "cmd": "pxh", "command": "commander check" },
+
+      { "t": 68.0, "cmd": "goto_offset", "north_m": -12.0, "east_m":   7.0, "alt": 46.0 },  
+
+   
+      { "t": 80.0, "cmd": "land" }
     ],
     "expect": { "final_mode": "LAND" }
   }
