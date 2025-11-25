@@ -4,14 +4,17 @@
 PX4 SITL test runner:
 - Connects to a PX4 SITL instance via MAVSDK (UDP 14540+instance)
 - Executes time-ordered actions from scenarios.json
-- Injects failures via PX4 pxh shell (mavlink_shell.py) and logs shell output
+- Injects failures via PX4 pxh shell (mavlink_shell.py) with verification snapshots
 - Streams telemetry to per-scenario CSV for post-mortem analysis
+- Supports background "inject_all_failures" while flying patterns (e.g., drawing "IO")
 """
-import asyncio, json, time, sys, csv, re
+from stakeholders import RegulatorPolicy, VendorSafetyPolicy, OperatorMissionPlanner
+import asyncio, json, time, sys, csv, re, math
 from pathlib import Path
+from typing import Optional
 import pexpect
-import math
-
+from concurrent.futures import ThreadPoolExecutor
+from grid_atc import upload_geofence_rect, grid_offsets, actions_for_grid
 
 from mavsdk import System
 from mavsdk.telemetry import FlightMode
@@ -19,42 +22,15 @@ from mavsdk.telemetry import FlightMode
 # ===================== Helpers & config =====================
 
 def px4_port_for_instance(instance: int) -> int:
-    # PX4 SITL default mapping (seen in your logs)
+    # PX4 SITL default mapping:
     # instance i -> MAVSDK listen on UDP :14540+i
     return 14540 + int(instance)
 
-def px4_shell(px4_dir: str, instance: int, timeout_s: float = 20.0) -> pexpect.spawn:
-    """Open a PX4 pxh shell via mavlink_shell.py (binds to UDP port)"""
-    tools = Path(px4_dir) / "Tools" / "mavlink_shell.py"
-    port = px4_port_for_instance(instance)
-    py_exec = "/usr/bin/python3"  # avoid venv python (pymavlink missing there)
-    sh = pexpect.spawn(f"{py_exec} {tools} {port}", encoding="utf-8", timeout=timeout_s)
-    sh.expect_exact("pxh>")
-    return sh
-
-
-# Some common “failure” shorthands. You can add more by running `failure -h` in pxh.
-FAIL_MAP = {
-    "imu_off":       "failure imu off",
-    "gyro_off":      "failure gyro off",
-    "accel_off":     "failure accel off",
-    "mag_off":       "failure mag off",
-    "baro_off":      "failure baro off",
-    "gps_off":       "failure gps off",
-    "battery_low":   "failure battery low",
-    # examples you can enable later:
-    # "motor_failure": "failure motor 1 stop",
-}
-
-def is_int_like(val: str) -> bool:
-    try:
-        int(val)
-        return True
-    except Exception:
-        return False
-
 def now_hms() -> str:
     return time.strftime('%H:%M:%S')
+
+def is_int_like(val: str) -> bool:
+    return re.fullmatch(r"-?\d+", str(val)) is not None
 
 # meters N/E -> degrees lat/lon at a reference latitude
 def _meters_to_latlon(d_north_m: float, d_east_m: float, ref_lat_deg: float, ref_lon_deg: float):
@@ -64,20 +40,32 @@ def _meters_to_latlon(d_north_m: float, d_east_m: float, ref_lat_deg: float, ref
 
 async def _get_home(sysobj):
     # Try home first, then fall back to current position
-    async for h in sysobj.telemetry.home():
-        return h
-    async for p in sysobj.telemetry.position():
-        return p
+    try:
+        async for h in sysobj.telemetry.home():
+            return h
+    except Exception:
+        pass
+    try:
+        async for p in sysobj.telemetry.position():
+            return p
+    except Exception:
+        pass
     return None
 
 
 # ===================== Telemetry logging =====================
 
-async def telemetry_logger(sysobj: System, csv_path: Path, stop_evt: asyncio.Event, tag: str):
+async def telemetry_logger(
+    sysobj: System,
+    csv_path: Path,
+    stop_evt: asyncio.Event,
+    tag: str,
+    log=None,
+    regulator: RegulatorPolicy = None,
+    vendor: VendorSafetyPolicy = None,
+):
     """
-    Writes a CSV with periodic samples:
-    t_s, flight_mode, in_air, armed, battery_pct, voltage_v, lat, lon, abs_alt_m,
-    health flags (subset)
+    Writes a CSV with periodic samples and optionally logs a compact line to the terminal.
     """
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     f = csv_path.open("w", newline="")
@@ -132,6 +120,13 @@ async def telemetry_logger(sysobj: System, csv_path: Path, stop_evt: asyncio.Eve
         except Exception:
             return None
 
+    async def get_vel():
+        try:
+            async for v in sysobj.telemetry.velocity_ned():
+                return v
+        except Exception:
+            return None
+
     try:
         while not stop_evt.is_set():
             t = time.monotonic() - t0
@@ -141,17 +136,31 @@ async def telemetry_logger(sysobj: System, csv_path: Path, stop_evt: asyncio.Eve
             bt = await get_batt()
             ps = await get_pos()
             hl = await get_health()
+            vl = await get_vel()
+
+            speed = 0.0
+            if vl is not None:
+                speed = math.sqrt(
+                    vl.north_m_s**2 + vl.east_m_s**2 + vl.down_m_s**2
+                )
+
+            batt_pct = getattr(bt, "remaining_percent", 0.0) if bt else 0.0
+            volt = getattr(bt, "voltage_v", 0.0) if bt else 0.0
+            lat = getattr(ps, "latitude_deg", 0.0) if ps else 0.0
+            lon = getattr(ps, "longitude_deg", 0.0) if ps else 0.0
+            abs_alt = getattr(ps, "absolute_altitude_m", 0.0) if ps else 0.0
+            rel_alt = getattr(ps, "relative_altitude_m", 0.0) if ps else 0.0
 
             w.writerow([
                 f"{t:.2f}", tag,
                 str(fm) if fm else "",
                 ia if ia is not None else "",
                 ar if ar is not None else "",
-                f"{getattr(bt, 'remaining_percent', 0.0):.3f}" if bt else "",
-                f"{getattr(bt, 'voltage_v', 0.0):.3f}" if bt else "",
-                f"{getattr(ps, 'latitude_deg', 0.0):.7f}" if ps else "",
-                f"{getattr(ps, 'longitude_deg', 0.0):.7f}" if ps else "",
-                f"{getattr(ps, 'absolute_altitude_m', 0.0):.3f}" if ps else "",
+                f"{batt_pct:.3f}",
+                f"{volt:.3f}",
+                f"{lat:.7f}",
+                f"{lon:.7f}",
+                f"{abs_alt:.3f}",
                 getattr(hl, 'is_gyrometer_calibration_ok', None),
                 getattr(hl, 'is_accelerometer_calibration_ok', None),
                 getattr(hl, 'is_magnetometer_calibration_ok', None),
@@ -160,83 +169,124 @@ async def telemetry_logger(sysobj: System, csv_path: Path, stop_evt: asyncio.Eve
                 getattr(hl, 'is_home_position_ok', None),
             ])
             f.flush()
+
+            # --- Terminal log line ---
+            if log:
+                log(
+                    f"TEL t={t:5.1f}s mode={fm} in_air={ia} armed={ar} "
+                    f"batt={batt_pct*100:5.1f}% v={volt:4.2f}V "
+                    f"lat={lat:.5f} lon={lon:.5f} rel_alt={rel_alt:4.1f}m "
+                    f"speed≈{speed:4.1f}m/s"
+                )
+
+            # --- Stakeholder policies ---
+            if regulator and ps:
+                violations = regulator.check_inflight(lat, lon, rel_alt, speed)
+                for msg in violations:
+                    if log:
+                        log(f"REGULATOR: {msg}")
+                    else:
+                        print("REGULATOR:", msg)
+
+            if vendor and bt:
+                vendor.check_battery(batt_pct * 100.0, log or print)
+
             await asyncio.sleep(0.20)
     finally:
         f.close()
 
 
+# ===================== Persistent pxh shell =====================
 
-
-# ===================== Shell / PXH actions =====================
-
-async def pxh_run(px4_dir: str, instance: int, command: str, log, out_path: Path = None):
+class PxhShell:
     """
-    Run arbitrary pxh command (e.g. 'failure gps off', 'listener vehicle_status', etc.)
-    Capture output until the next 'pxh>' prompt.
+    Persistent mavlink_shell.py session so pxh commands run quickly and
+    don't block the asyncio loop (they execute in a single thread executor).
     """
-    try:
-        sh = px4_shell(px4_dir, instance)
-        sh.sendline(command)
-        sh.expect("pxh>")
-        output = sh.before  # text printed between command and prompt
-        sh.close(force=True)
-        if out_path:
-            out_path.parent.mkdir(parents=True, exist_ok=True)
-            out_path.write_text(output)
-        # Also print the first lines into log (truncated)
-        head = "\n".join(output.splitlines()[:20])
-        log(f"pxh[{command!r}] ->\n{head}")
-    except Exception as e:
-        log(f"pxh error: {e}")
+    def __init__(self, px4_dir: str, instance: int, timeout_s: float = 20.0):
+        self.px4_dir = px4_dir
+        self.instance = instance
+        self.timeout_s = timeout_s
+        self._sh: Optional[pexpect.spawn] = None
+        self._lock = asyncio.Lock()
+        self._executor = ThreadPoolExecutor(max_workers=1)
 
-async def pxh_inject_failure(px4_dir: str, instance: int, key: str, log, out_dir: Path):
-    cmd = FAIL_MAP.get(key)
-    if not cmd:
-        log(f"unknown failure key: {key}")
-        return
+    def _ensure_sync(self):
+        if self._sh is not None and self._sh.isalive():
+            return
+        tools = Path(self.px4_dir) / "Tools" / "mavlink_shell.py"
+        port = px4_port_for_instance(self.instance)
+        self._sh = pexpect.spawn(f"/usr/bin/python3 {tools} {port}",
+                                 encoding="utf-8", timeout=self.timeout_s)
+        self._sh.expect_exact("pxh>")
 
-    out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / f"pxh_{key}.txt"
+    def _run_sync(self, command: str) -> str:
+        self._ensure_sync()
+        self._sh.sendline(command)
+        self._sh.expect("pxh>")
+        return self._sh.before  # text printed between command and next prompt
 
-    try:
-        sh = px4_shell(px4_dir, instance)
-        # 1) inject the failure
-        sh.sendline(cmd)
-        sh.expect("pxh>")
-        fail_out = sh.before
+    async def run(self, command: str) -> str:
+        async with self._lock:
+            loop = asyncio.get_running_loop()
+            return await loop.run_in_executor(self._executor, self._run_sync, command)
 
-        # 2) show commander status
-        sh.sendline("commander check")
-        sh.expect("pxh>")
-        chk_out = sh.before
+    async def close(self):
+        async with self._lock:
+            if self._sh is not None:
+                try:
+                    self._sh.close(force=True)
+                except Exception:
+                    pass
+                self._sh = None
+            self._executor.shutdown(wait=False)
 
-        # 3) show vehicle_status once
-        sh.sendline("listener vehicle_status -n 1")
-        sh.expect("pxh>")
-        stat_out = sh.before
 
-        # (optional) IMU snapshot if relevant
-        if "imu" in key:
-            sh.sendline("listener sensor_combined -n 1")
-            sh.expect("pxh>")
-            imu_out = sh.before
-        else:
-            imu_out = ""
+def _cmd_to_fname(cmd: str) -> str:
+    return (re.sub(r"[^\w.-]+", "_", cmd)[:64] or "pxh_cmd") + ".txt"
 
-        sh.close(force=True)
+async def pxh_run(shell: PxhShell, command: str, log, out_dir: Optional[Path] = None) -> str:
+    out = await shell.run(command)
+    # Save full output for traceability
+    if out_dir:
+        out_dir.mkdir(parents=True, exist_ok=True)
+        (out_dir / _cmd_to_fname(command)).write_text(out)
+    # Print full output so you "see it in the terminal"
+    log(f"$ {command}\n{out}".rstrip())
+    return out
 
-        blob = (
-            f"$ {cmd}\n{fail_out}\n\n"
-            f"$ commander check\n{chk_out}\n\n"
-            f"$ listener vehicle_status -n 1\n{stat_out}\n\n"
-            + (f"$ listener sensor_combined -n 1\n{imu_out}\n" if imu_out else "")
-        )
-        out_path.write_text(blob)
-        # print everything to the console too (so you *see* it live)
-        log(f"=== pxh output for {key} ===\n{blob}")
 
-    except Exception as e:
-        log(f"pxh error: {e}")
+# ===================== Failure injection =====================
+
+# Canonical failure space from your list:
+FAIL_COMPONENTS = [
+    "gyro", "accel", "mag", "baro", "gps",
+    "optical_flow", "vio", "distance_sensor", "airspeed",
+    "battery", "motor", "servo", "avoidance",
+    "rc_signal", "mavlink_signal",
+]
+FAIL_TYPES = ["off", "stuck", "garbage", "wrong", "slow", "delayed", "intermittent"]
+# Use "ok" to clear/reset a component
+
+async def inject_failure_once(shell: PxhShell, component: str, ftype: str, inst: int, log, out_dir: Path) -> bool:
+    """
+    Inject one failure; return True if PX4 likely accepted it.
+    Also captures commander and status snapshots to prove timing.
+    """
+    cmd = f"failure {component} {ftype} -i {inst}"
+    out = await pxh_run(shell, cmd, log, out_dir)
+    accepted = True
+    for bad in ["unknown", "invalid", "error", "not supported", "usage:"]:
+        if bad in out.lower():
+            accepted = False
+            break
+    # Verification snapshots
+    await pxh_run(shell, "commander check", log, out_dir)
+    await pxh_run(shell, "listener vehicle_status -n 1", log, out_dir)
+    return accepted
+
+async def clear_failure(shell: PxhShell, component: str, inst: int, log, out_dir: Path):
+    await pxh_run(shell, f"failure {component} ok -i {inst}", log, out_dir)
 
 
 # ===================== MAVSDK actions =====================
@@ -244,10 +294,12 @@ async def pxh_inject_failure(px4_dir: str, instance: int, key: str, log, out_dir
 async def connect_system(instance: int, log) -> System:
     sysobj = System()
     port = px4_port_for_instance(instance)
-    await sysobj.connect(system_address=f"udp://:{port}")
 
-    # Wait briefly for a heartbeat
-    t_deadline = time.time() + 4.0
+    # Use udpin + explicit interface for new MAVSDK
+    await sysobj.connect(system_address=f"udpin://0.0.0.0:{port}")
+
+    # Wait briefly for a heartbeat / health
+    t_deadline = time.time() + 10.0
     got = False
     try:
         async for _ in sysobj.telemetry.health():
@@ -255,11 +307,16 @@ async def connect_system(instance: int, log) -> System:
             break
     except Exception:
         pass
+
     if not got and time.time() > t_deadline:
-        log("warning: no heartbeat yet (continuing)")
+        log("warning: no heartbeat yet (continuing anyway)")
+
     return sysobj
 
-async def do_action(sysobj: System, action: dict, px4_dir: str, instance: int, log, out_dir: Path):
+
+
+
+async def do_action(sysobj: System, action: dict, px4_dir: str, instance: int, log, scen_dir: Path, shell: PxhShell):
     cmd = action.get("cmd")
     if not cmd:
         log("action missing 'cmd'")
@@ -291,32 +348,26 @@ async def do_action(sysobj: System, action: dict, px4_dir: str, instance: int, l
     elif cmd == "param_set":
         name = action["name"]
         value = action["value"]
-        if isinstance(value, (int,)) or (isinstance(value, str) and is_int_like(value)):
+        if isinstance(value, int) or is_int_like(value):
             await sysobj.param.set_param_int(name, int(value))
         else:
             await sysobj.param.set_param_float(name, float(value))
         log(f"param set {name} -> {value}")
 
     elif cmd == "pxh":
-        # run arbitrary pxh command
+        # run arbitrary pxh command (supports your whole command list)
         pxh_cmd = action["command"]
-        fname = re.sub(r"[^\w.-]+", "_", pxh_cmd)[:64] or "pxh_cmd"
-        await pxh_run(px4_dir, instance, pxh_cmd, log, out_dir / f"pxh_{fname}.txt")
-
-    elif cmd == "inject_failure":
-        await pxh_inject_failure(px4_dir, instance, action["failure"], log, out_dir)
+        await pxh_run(shell, pxh_cmd, log, scen_dir / "pxh")
 
     elif cmd == "set_speed":
-        # Max horizontal speed (m/s). Older MAVSDK may not have set_maximum_speed.
         spd = float(action["mps"])
-        try:  
+        try:
             setter = getattr(sysobj.action, "set_maximum_speed", None)
             if setter:
                 await setter(spd)
                 log(f"set speed {spd} m/s via MAVSDK")
             else:
                 # Fallback via PX4 params:
-                # MPC_XY_CRUISE / MPC_XY_VEL_MAX are m/s; MIS_SPEED is cm/s for missions
                 await sysobj.param.set_param_float("MPC_XY_CRUISE", spd)
                 await sysobj.param.set_param_float("MPC_XY_VEL_MAX", spd)
                 await sysobj.param.set_param_int("MIS_SPEED", int(spd * 100))
@@ -324,27 +375,22 @@ async def do_action(sysobj: System, action: dict, px4_dir: str, instance: int, l
         except Exception as e:
             log(f"set_speed ignored: {e}")
 
-
     elif cmd == "goto_offset":
         home = await _get_home(sysobj)
         if not home:
             log("goto_offset: no home/pos yet")
             return
         lat, lon = _meters_to_latlon(float(action["north_m"]), float(action["east_m"]),
-                                    home.latitude_deg, home.longitude_deg)
-
+                                     home.latitude_deg, home.longitude_deg)
         if "rel_alt_m" in action:
             alt = float(home.absolute_altitude_m) + float(action["rel_alt_m"])
         else:
             alt = float(action.get("alt", float(home.absolute_altitude_m)))
-
         yaw = float(action.get("yaw", 0.0))
         await sysobj.action.goto_location(lat, lon, alt, yaw)
-        log(f"goto_offset N{action['north_m']} E{action['east_m']} -> {lat:.7f},{lon:.7f} alt {alt:.2f} (AMSL)")
-
+        log(f"goto_offset N{action['north_m']} E{action['east_m']} -> {lat:.7f},{lon:.7f} alt {alt:.2f} AMSL")
 
     elif cmd == "goto_abs":
-        # Absolute WGS84 destination
         lat = float(action["lat"]); lon = float(action["lon"])
         home = await _get_home(sysobj)
         if "rel_alt_m" in action and home:
@@ -357,9 +403,49 @@ async def do_action(sysobj: System, action: dict, px4_dir: str, instance: int, l
         await sysobj.action.goto_location(lat, lon, alt_amsl, yaw)
         log(f"goto_abs {lat:.7f},{lon:.7f} alt {alt_amsl:.1f} ({source})")
 
+    elif cmd == "inject_all_failures":
+        # Run a background campaign of (component × type) injections.
+        start_delay = float(action.get("start_after_s", 10.0))
+        interval = float(action.get("interval_s", 0.8))
+        clear = bool(action.get("clear_after_each", True))
+        inst = int(action.get("instance_index", 0))
+        outdir_root = scen_dir / "failures"
+
+        async def _bg():
+            await asyncio.sleep(start_delay)
+            log(f"BEGIN injecting all failures (inst={inst}, dt={interval}s, clear={clear})")
+            for comp in FAIL_COMPONENTS:
+                for ftype in FAIL_TYPES:
+                    outdir = outdir_root / comp / ftype
+                    ok = await inject_failure_once(shell, comp, ftype, inst, log, outdir)
+                    if clear:
+                        await clear_failure(shell, comp, inst, log, outdir_root / comp / "ok")
+                    await asyncio.sleep(interval)
+            log("DONE injecting all failures")
+        asyncio.create_task(_bg())
+
+    elif cmd == "geofence_rect":
+        # Upload a rectangular inclusion geofence centered at HOME
+        width_m  = float(action.get("width_m", 400.0))
+        height_m = float(action.get("height_m", 400.0))
+
+        home = await _get_home(sysobj)
+        if not home:
+            log("geofence_rect: no home/pos yet; skipping")
+        else:
+            await upload_geofence_rect(
+                sysobj,
+                center_lat=home.latitude_deg,
+                center_lon=home.longitude_deg,
+                width_m=width_m,
+                height_m=height_m,
+        )
+        log(f"geofence uploaded {width_m}x{height_m} m around home")
+
 
     else:
         log(f"UNKNOWN action {cmd}")
+
 
 # ===================== Scenario engine =====================
 
@@ -367,6 +453,27 @@ async def run_scenario(px4_dir: str, scenario: dict, out_root: Path):
     name     = scenario["name"]
     instance = int(scenario.get("instance", 1))
     actions  = sorted(scenario.get("actions", []), key=lambda a: float(a.get("t", 0.0)))
+
+    # Expand any 'append_grid' macros into concrete goto_offset actions
+    expanded = []
+    for a in actions:
+        if a.get("cmd") == "append_grid":
+            nx = int(a.get("nx", 5))
+            ny = int(a.get("ny", 5))
+            spacing = float(a.get("spacing_m", 25.0))
+            alt = float(a.get("alt", 46.0))
+            start_t = float(a.get("start_t", 6.0))
+            step_t = float(a.get("step_t", 4.0))
+
+            pts = grid_offsets(nx, ny, spacing)
+            grid_acts = actions_for_grid(pts, cruise_alt_m=alt, start_t=start_t, step_t=step_t)
+            expanded.extend(grid_acts)
+            # Optional breadcrumb for your logs:
+            expanded.append({"t": max(0.0, start_t - 0.001), "cmd": "pxh", "command": f"echo 'Starting {nx}x{ny} grid @ {spacing} m'"})
+        else:
+            expanded.append(a)
+
+    actions = sorted(expanded, key=lambda a: float(a.get("t", 0.0)))
 
     # I/O paths
     scen_dir = out_root / f"{name}_i{instance}"
@@ -383,12 +490,35 @@ async def run_scenario(px4_dir: str, scenario: dict, out_root: Path):
 
     log("connecting...")
     sysobj = await connect_system(instance, log)
+    shell = PxhShell(px4_dir, instance)
     log("connected")
 
-    # start telemetry CSV task
-    stop_evt = asyncio.Event()
-    tel_task = asyncio.create_task(telemetry_logger(sysobj, csv_path, stop_evt, tag=name))
+    # --- Stakeholder instances for this scenario ---
+    # Regulator: 120 m ceiling, 10 m/s, geofence around KSQL core
+    #regulator = RegulatorPolicy(max_altitude_m=120.0, max_speed_m_s=10.0)
+    #regulator.add_geofence("KSQL core", center=(37.5120, -122.2500), radius_m=1000.0)
 
+    regulator = RegulatorPolicy(max_altitude_m=120.0, max_speed_m_s=10.0)
+    # Optional: add a logical no-fly zone somewhere near Baylands later
+    # regulator.add_geofence("No-fly demo", center=(37.4128, -121.9998), radius_m=200.0)
+
+
+    # Vendor: watch battery; wire drone object so you can RTL later
+    vendor = VendorSafetyPolicy(drone=sysobj)
+
+    # start telemetry CSV + policy monitoring task
+    stop_evt = asyncio.Event()
+    tel_task = asyncio.create_task(
+        telemetry_logger(
+            sysobj,
+            csv_path,
+            stop_evt,
+            tag=name,
+            log=log,
+            regulator=regulator,
+            vendor=vendor,
+        )
+    )
     # time-stepped actions
     t0 = time.monotonic()
     try:
@@ -399,13 +529,12 @@ async def run_scenario(px4_dir: str, scenario: dict, out_root: Path):
             if now < next_t:
                 await asyncio.sleep(min(0.1, next_t - now))
                 continue
-            await do_action(sysobj, actions[idx], px4_dir, instance, log, scen_dir)
+            await do_action(sysobj, actions[idx], px4_dir, instance, log, scen_dir, shell)
             idx += 1
 
         # Optional expectations
         expect = scenario.get("expect", {})
         if "final_mode" in expect:
-            # sample: verify we ended up in LAND after 'land'
             last_mode = None
             try:
                 async for fm in sysobj.telemetry.flight_mode():
@@ -423,7 +552,11 @@ async def run_scenario(px4_dir: str, scenario: dict, out_root: Path):
             await asyncio.wait_for(tel_task, timeout=2.0)
         except Exception:
             tel_task.cancel()
+        await shell.close()
         logf.close()
+
+
+# ===================== Main =====================
 
 async def main():
     if len(sys.argv) < 3:
@@ -436,12 +569,14 @@ async def main():
 
     scenarios = json.loads(scen_path.read_text())
 
-    # Run sequentially (simpler to reason about ports and logs).
+    tasks = []
     for s in scenarios:
-        try:
-            await run_scenario(px4_dir, s, out_root)
-        except Exception as e:
-            print(f"[{now_hms()}] Scenario {s.get('name')} failed: {e}", file=sys.stderr)
+        tasks.append(run_scenario(px4_dir, s, out_root))
+
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    for s, res in zip(scenarios, results):
+        if isinstance(res, Exception):
+            print(f"[{now_hms()}] Scenario {s.get('name')} failed: {res}", file=sys.stderr)
 
 if __name__ == "__main__":
     asyncio.run(main())

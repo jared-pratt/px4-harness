@@ -1,0 +1,11 @@
+t_s,tag,flight_mode,in_air,armed,battery_pct,voltage_v,lat,lon,abs_alt_m,health_gyro_cal,health_accel_cal,health_mag_cal,health_global_pos,health_local_pos,health_home_pos
+0.00,complex_route_baylands,LAND,True,True,50.000,15.300,37.4121646,-121.9989638,52.278,True,True,True,True,True,True
+5.24,complex_route_baylands,LAND,True,True,50.000,15.300,37.4121647,-121.9989637,46.536,True,True,True,True,True,True
+9.26,complex_route_baylands,TAKEOFF,True,True,50.000,15.300,37.4121647,-121.9989638,54.230,True,True,True,True,True,True
+13.28,complex_route_baylands,TAKEOFF,True,True,50.000,15.300,37.4121646,-121.9989639,65.990,True,True,True,True,True,True
+17.30,complex_route_baylands,HOLD,True,True,50.000,15.300,37.4121612,-121.9987773,74.894,True,True,True,True,True,True
+21.32,complex_route_baylands,HOLD,True,True,50.000,15.300,37.4121904,-121.9985585,78.079,True,True,True,True,True,True
+25.34,complex_route_baylands,HOLD,True,True,50.000,15.300,37.4124194,-121.9985609,78.469,True,True,True,True,True,True
+29.36,complex_route_baylands,HOLD,True,True,50.000,15.300,37.4124788,-121.9988613,78.555,True,True,True,True,True,True
+33.39,complex_route_baylands,HOLD,True,True,50.000,15.300,37.4123652,-121.9991560,78.576,True,True,True,True,True,True
+37.40,complex_route_baylands,HOLD,True,True,50.000,15.300,37.4121856,-121.9992059,78.653,True,True,True,True,True,True
