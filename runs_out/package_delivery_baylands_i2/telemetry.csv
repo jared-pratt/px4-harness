@@ -1,0 +1,2 @@
+t_s,tag,flight_mode,in_air,armed,battery_pct,voltage_v,lat,lon,abs_alt_m,health_gyro_cal,health_accel_cal,health_mag_cal,health_global_pos,health_local_pos,health_home_pos
+0.00,package_delivery_baylands,HOLD,True,True,50.000,15.300,37.4121732,-121.9988783,41.896,True,True,True,True,True,True

@@ -1,0 +1,13 @@
+t_s,tag,flight_mode,in_air,armed,battery_pct,voltage_v,lat,lon,abs_alt_m,health_gyro_cal,health_accel_cal,health_mag_cal,health_global_pos,health_local_pos,health_home_pos
+0.00,IO_all_failures_cleared,HOLD,False,True,95.000,16.080,37.4121732,-121.9988673,38.067,True,True,True,True,True,True
+5.22,IO_all_failures_cleared,TAKEOFF,True,True,86.000,16.200,37.4121733,-121.9988672,38.099,True,True,True,True,True,True
+11.25,IO_all_failures_cleared,HOLD,False,False,100.000,16.200,37.4121733,-121.9988673,38.107,True,True,True,True,True,True
+17.28,IO_all_failures_cleared,HOLD,False,False,100.000,16.200,37.4121730,-121.9988672,38.109,True,True,True,True,True,True
+23.31,IO_all_failures_cleared,HOLD,False,False,100.000,16.200,37.4121732,-121.9988673,38.106,True,True,True,True,True,True
+29.34,IO_all_failures_cleared,HOLD,False,False,100.000,16.200,37.4121733,-121.9988674,38.083,True,True,True,True,True,True
+35.37,IO_all_failures_cleared,HOLD,False,False,100.000,16.200,37.4121732,-121.9988669,38.076,True,True,True,True,True,True
+41.40,IO_all_failures_cleared,HOLD,False,False,100.000,16.200,37.4121730,-121.9988673,38.104,True,True,True,True,True,True
+47.43,IO_all_failures_cleared,HOLD,False,False,100.000,16.200,37.4121731,-121.9988671,38.114,True,True,True,True,True,True
+53.46,IO_all_failures_cleared,HOLD,False,False,100.000,16.200,37.4121734,-121.9988671,38.088,True,True,True,True,True,True
+59.49,IO_all_failures_cleared,HOLD,False,False,100.000,16.200,37.4121732,-121.9988671,38.086,True,True,True,True,True,True
+65.52,IO_all_failures_cleared,HOLD,False,False,100.000,16.200,37.4121730,-121.9988673,38.074,True,True,True,True,True,True
