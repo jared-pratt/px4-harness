@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+
+# Outputs
+runs_out/
+runs_out_headless/
+runs_out*/
+*.ulg
+*.log
+telemetry*.csv
+
+# OS
+.DS_Store
