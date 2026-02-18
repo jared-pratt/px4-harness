@@ -1,0 +1,12 @@
+# headless-sim
+
+One-command headless runner:
+- optionally starts PX4 SITL (and optional Gazebo server)
+- runs scenarios through the existing `runner.py`
+- writes all artifacts into a timestamped run folder
+
+## Install (editable)
+From repo root:
+```bash
+source .venv/bin/activate
+pip install -e headless_sim

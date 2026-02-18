@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "headless-sim"
+version = "0.1.0"
+description = "Headless PX4 harness runner (starts SITL + runs scenarios + logs artifacts)"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.scripts]
+headless-sim = "headless_sim.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+[tool.setuptools.packages.find]
+where = ["."]
