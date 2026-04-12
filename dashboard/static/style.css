@@ -1,0 +1,482 @@
+/* =========================================================
+   UAV Simulation Dashboard — Dark ops-center theme
+   ========================================================= */
+
+:root {
+  --bg:          #0d1117;
+  --surface:     #161b22;
+  --surface2:    #21262d;
+  --border:      #30363d;
+  --text:        #e6edf3;
+  --text-muted:  #8b949e;
+  --accent:      #58a6ff;
+  --green:       #3fb950;
+  --red:         #f85149;
+  --yellow:      #d29922;
+  --orange:      #db6d28;
+  --radius:      8px;
+  --mono:        "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---- Header ---- */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.ws-badge {
+  font-size: 12px;
+  font-family: var(--mono);
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+}
+.ws-badge.connected    { color: var(--green);  border-color: var(--green); }
+.ws-badge.disconnected { color: var(--red);    border-color: var(--red); }
+.ws-badge.connecting   { color: var(--yellow); border-color: var(--yellow); }
+
+/* ---- Main layout ---- */
+main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ---- Section headings ---- */
+.panel-title {
+  margin: 0 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+
+/* ---- Drone cards ---- */
+.drones-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.drone-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.drone-card.offline {
+  opacity: 0.6;
+  border-color: var(--red);
+}
+
+.drone-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.drone-header h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.conn-badge {
+  font-size: 11px;
+  font-family: var(--mono);
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+.conn-badge.online  { background: rgba(63,185,80,.15); color: var(--green); border: 1px solid var(--green); }
+.conn-badge.offline { background: rgba(248,81,73,.15);  color: var(--red);  border: 1px solid var(--red); }
+
+/* Telemetry grid */
+.tel-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px 12px;
+  margin-bottom: 14px;
+}
+
+.tel-item {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.tel-item.wide {
+  grid-column: span 3;
+}
+
+.tel-item.half {
+  grid-column: span 1;
+}
+
+.tel-label {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.tel-value {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.tel-value.green  { color: var(--green); }
+.tel-value.red    { color: var(--red); }
+.tel-value.yellow { color: var(--yellow); }
+.tel-value.muted  { color: var(--text-muted); }
+
+/* Battery bar */
+.batt-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 3px;
+}
+
+.batt-track {
+  flex: 1;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.batt-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease, background 0.3s;
+  background: var(--green);
+}
+.batt-fill.warn   { background: var(--yellow); }
+.batt-fill.danger { background: var(--red); }
+
+/* Health indicators */
+.health-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.health-chip {
+  font-size: 11px;
+  font-family: var(--mono);
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+.health-chip.ok   { color: var(--green);       border-color: rgba(63,185,80,.4); }
+.health-chip.fail { color: var(--red);          border-color: rgba(248,81,73,.4); }
+.health-chip.unk  { color: var(--text-muted);   }
+
+/* Drone controls */
+.drone-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ---- Panels ---- */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+/* ---- Form rows ---- */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-group label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+/* ---- Buttons ---- */
+button, select, input[type="number"], input[type="text"] {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  font-size: 13px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+button:hover {
+  border-color: var(--accent);
+  background: rgba(88,166,255,.1);
+}
+
+button:active {
+  background: rgba(88,166,255,.2);
+}
+
+button.primary {
+  background: var(--accent);
+  color: #0d1117;
+  font-weight: 600;
+  border-color: var(--accent);
+}
+button.primary:hover {
+  background: #79c0ff;
+  border-color: #79c0ff;
+}
+
+button.danger {
+  border-color: var(--red);
+  color: var(--red);
+}
+button.danger:hover {
+  background: rgba(248,81,73,.15);
+}
+
+button.success {
+  border-color: var(--green);
+  color: var(--green);
+}
+button.success:hover {
+  background: rgba(63,185,80,.15);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+select, input[type="number"], input[type="text"] {
+  cursor: default;
+  outline: none;
+}
+select:focus, input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+/* ---- Goto form inline ---- */
+.goto-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.goto-row input {
+  width: 80px;
+}
+
+/* ---- Console ---- */
+.console-wrap {
+  background: #010409;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  height: 220px;
+  overflow-y: auto;
+  padding: 8px 12px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.console-wrap .log-line {
+  color: var(--text-muted);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.console-wrap .log-line.event  { color: var(--accent); }
+.console-wrap .log-line.error  { color: var(--red); }
+.console-wrap .log-line.warn   { color: var(--yellow); }
+.console-wrap .log-line.action { color: var(--green); }
+
+.console-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.console-header button {
+  font-size: 11px;
+  padding: 3px 8px;
+}
+
+/* ---- Map + Graphs row ---- */
+.map-graphs-row {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 16px;
+}
+
+#map {
+  height: 380px;
+  border-radius: 6px;
+  z-index: 0;
+}
+
+/* Leaflet dark-mode overrides */
+.leaflet-container { background: #1c2128; }
+.leaflet-tile { filter: brightness(0.85) saturate(0.7); }
+.leaflet-popup-content-wrapper {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.leaflet-popup-tip { background: var(--surface2); }
+
+/* ---- Graphs ---- */
+.graphs-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.graph-tabs {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.tab-btn {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+.tab-btn.active {
+  background: var(--accent);
+  color: #0d1117;
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+.graph-wrap {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+}
+
+.graph-wrap canvas {
+  width: 100% !important;
+  max-height: 320px;
+}
+
+/* ---- Log analysis ---- */
+#log-charts canvas {
+  max-height: 180px;
+  margin-bottom: 12px;
+}
+
+.anomaly-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-family: var(--mono);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin: 2px;
+  background: rgba(248,81,73,.12);
+  color: var(--red);
+  border: 1px solid rgba(248,81,73,.3);
+}
+
+/* ---- Scenario editor ---- */
+#scenario-editor {
+  width: 100%;
+  height: 280px;
+  font-family: var(--mono);
+  font-size: 12px;
+  background: #010409;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  resize: vertical;
+  outline: none;
+  line-height: 1.6;
+  tab-size: 2;
+}
+#scenario-editor:focus { border-color: var(--accent); }
+
+#scenario-editor-status {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  min-height: 18px;
+}
+
+.panel-title-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+.panel-title-row .panel-title {
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .drones-row      { grid-template-columns: 1fr; }
+  .map-graphs-row  { grid-template-columns: 1fr; }
+  .tel-grid        { grid-template-columns: repeat(2, 1fr); }
+  .tel-item.wide   { grid-column: span 2; }
+}

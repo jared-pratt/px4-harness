@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UAV Simulation Dashboard</title>
+
+  <!-- Leaflet (map) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- ═══════════════════════ Header ═══════════════════════ -->
+<header>
+  <h1>UAV Simulation Dashboard</h1>
+  <span id="ws-badge" class="ws-badge connecting">◌ Connecting…</span>
+</header>
+
+<main>
+
+  <!-- ═══════════════════════ Drone Cards ═══════════════════════ -->
+  <div class="drones-row">
+
+    <!-- ── Drone 1 ── -->
+    <div class="drone-card offline" id="drone-1">
+      <div class="drone-header">
+        <h2>DRONE 1</h2>
+        <span class="conn-badge offline">OFFLINE</span>
+      </div>
+      <div class="tel-grid">
+        <div class="tel-item">
+          <span class="tel-label">Mode</span>
+          <span class="tel-value d-mode muted">—</span>
+        </div>
+        <div class="tel-item">
+          <span class="tel-label">Armed</span>
+          <span class="tel-value d-armed muted">—</span>
+        </div>
+        <div class="tel-item">
+          <span class="tel-label">In Air</span>
+          <span class="tel-value d-inair muted">—</span>
+        </div>
+        <div class="tel-item">
+          <span class="tel-label">Altitude (rel)</span>
+          <span class="tel-value d-alt">—</span>
+        </div>
+        <div class="tel-item">
+          <span class="tel-label">Speed</span>
+          <span class="tel-value d-speed">—</span>
+        </div>
+        <div class="tel-item">
+          <span class="tel-label">Battery</span>
+          <span class="tel-value d-batt">—</span>
+          <div class="batt-bar">
+            <div class="batt-track"><div class="batt-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+        <div class="tel-item wide">
+          <span class="tel-label">Position (lat, lon, abs alt)</span>
+          <span class="tel-value d-pos" style="font-size:13px">—</span>
+        </div>
+        <div class="tel-item wide">
+          <span class="tel-label">Health</span>
+          <div class="d-health health-row">—</div>
+        </div>
+      </div>
+      <div class="drone-controls">
+        <button class="success" onclick="droneAction(1,'arm')">Arm</button>
+        <button onclick="droneAction(1,'disarm')">Disarm</button>
+        <button class="primary" onclick="droneActionTakeoff(1)">Takeoff</button>
+        <input type="number" id="d1-takeoff-alt" value="5" min="1" max="120" style="width:56px" title="Takeoff alt (m)">
+        <button onclick="droneAction(1,'hold')">Hold</button>
+        <button onclick="droneAction(1,'land')">Land</button>
+        <button class="danger" onclick="droneAction(1,'return_to_launch')">RTL</button>
+      </div>
+      <div class="goto-row">
+        <span style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px">Goto offset:</span>
+        <div class="form-group">
+          <label>N (m)</label>
+          <input type="number" id="d1-north" value="0" step="5" style="width:68px">
+        </div>
+        <div class="form-group">
+          <label>E (m)</label>
+          <input type="number" id="d1-east" value="0" step="5" style="width:68px">
+        </div>
+        <div class="form-group">
+          <label>Alt (m rel)</label>
+          <input type="number" id="d1-alt" value="10" min="1" max="120" style="width:68px">
+        </div>
+        <button onclick="droneGotoOffset(1)">Go</button>
+      </div>
+    </div>
+
+    <!-- ── Drone 2 ── -->
+    <div class="drone-card offline" id="drone-2">
+      <div class="drone-header">
+        <h2>DRONE 2</h2>
+        <span class="conn-badge offline">OFFLINE</span>
+      </div>
+      <div class="tel-grid">
+        <div class="tel-item">
+          <span class="tel-label">Mode</span>
+          <span class="tel-value d-mode muted">—</span>
+        </div>
+        <div class="tel-item">
+          <span class="tel-label">Armed</span>
+          <span class="tel-value d-armed muted">—</span>
+        </div>
+        <div class="tel-item">
+          <span class="tel-label">In Air</span>
+          <span class="tel-value d-inair muted">—</span>
+        </div>
+        <div class="tel-item">
+          <span class="tel-label">Altitude (rel)</span>
+          <span class="tel-value d-alt">—</span>
+        </div>
+        <div class="tel-item">
+          <span class="tel-label">Speed</span>
+          <span class="tel-value d-speed">—</span>
+        </div>
+        <div class="tel-item">
+          <span class="tel-label">Battery</span>
+          <span class="tel-value d-batt">—</span>
+          <div class="batt-bar">
+            <div class="batt-track"><div class="batt-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+        <div class="tel-item wide">
+          <span class="tel-label">Position (lat, lon, abs alt)</span>
+          <span class="tel-value d-pos" style="font-size:13px">—</span>
+        </div>
+        <div class="tel-item wide">
+          <span class="tel-label">Health</span>
+          <div class="d-health health-row">—</div>
+        </div>
+      </div>
+      <div class="drone-controls">
+        <button class="success" onclick="droneAction(2,'arm')">Arm</button>
+        <button onclick="droneAction(2,'disarm')">Disarm</button>
+        <button class="primary" onclick="droneActionTakeoff(2)">Takeoff</button>
+        <input type="number" id="d2-takeoff-alt" value="5" min="1" max="120" style="width:56px" title="Takeoff alt (m)">
+        <button onclick="droneAction(2,'hold')">Hold</button>
+        <button onclick="droneAction(2,'land')">Land</button>
+        <button class="danger" onclick="droneAction(2,'return_to_launch')">RTL</button>
+      </div>
+      <div class="goto-row">
+        <span style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px">Goto offset:</span>
+        <div class="form-group">
+          <label>N (m)</label>
+          <input type="number" id="d2-north" value="0" step="5" style="width:68px">
+        </div>
+        <div class="form-group">
+          <label>E (m)</label>
+          <input type="number" id="d2-east" value="0" step="5" style="width:68px">
+        </div>
+        <div class="form-group">
+          <label>Alt (m rel)</label>
+          <input type="number" id="d2-alt" value="10" min="1" max="120" style="width:68px">
+        </div>
+        <button onclick="droneGotoOffset(2)">Go</button>
+      </div>
+    </div>
+
+  </div><!-- /drones-row -->
+
+
+  <!-- ═══════════════════════ Map + Graphs ═══════════════════════ -->
+  <div class="map-graphs-row">
+
+    <!-- Map -->
+    <div class="panel">
+      <div class="panel-title-row">
+        <h3 class="panel-title">Flight Path</h3>
+        <div style="margin-left:auto;display:flex;gap:8px">
+          <button onclick="fitMapToDrones()" style="font-size:11px">Fit View</button>
+          <button onclick="clearTrails()" style="font-size:11px">Clear Trails</button>
+        </div>
+      </div>
+      <div id="map"></div>
+    </div>
+
+    <!-- Graphs -->
+    <div class="panel graphs-panel">
+      <div class="panel-title-row">
+        <h3 class="panel-title">Live Telemetry</h3>
+        <div class="graph-tabs" id="graph-tabs">
+          <button class="tab-btn active" onclick="showGraph('alt',this)">Altitude</button>
+          <button class="tab-btn" onclick="showGraph('speed',this)">Speed</button>
+          <button class="tab-btn" onclick="showGraph('batt',this)">Battery</button>
+        </div>
+      </div>
+      <div class="graph-wrap">
+        <canvas id="chart-alt"></canvas>
+        <canvas id="chart-speed" style="display:none"></canvas>
+        <canvas id="chart-batt"  style="display:none"></canvas>
+      </div>
+    </div>
+
+  </div><!-- /map-graphs-row -->
+
+
+  <!-- ═══════════════════════ Flight Log Analysis ═══════════════════════ -->
+  <div class="panel">
+    <div class="panel-title-row">
+      <h3 class="panel-title">Flight Log Analysis</h3>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:flex-end">
+        <div class="form-group">
+          <label>Run</label>
+          <select id="run-select" style="min-width:260px"><option>loading…</option></select>
+        </div>
+        <button onclick="loadRunTelemetry()">Load &amp; Graph</button>
+      </div>
+    </div>
+    <div id="log-anomalies" style="margin-bottom:10px"></div>
+    <div id="log-charts" style="display:none">
+      <canvas id="chart-log-alt"></canvas>
+      <canvas id="chart-log-batt"></canvas>
+    </div>
+    <p id="log-status" style="font-size:12px;color:var(--text-muted);margin:0">Select a run above to graph its telemetry data.</p>
+  </div>
+
+
+  <!-- ═══════════════════════ Scenario Editor ═══════════════════════ -->
+  <div class="panel">
+    <div class="panel-title-row">
+      <h3 class="panel-title">Scenario Editor</h3>
+      <div style="margin-left:auto;display:flex;gap:8px">
+        <button onclick="loadScenarioEditor()">↺ Reload</button>
+        <button onclick="saveScenarios()">Save</button>
+        <button class="primary" onclick="runFirstScenario()">▶ Run First</button>
+      </div>
+    </div>
+    <textarea id="scenario-editor" spellcheck="false" placeholder="Loading scenarios.json…"></textarea>
+    <p id="scenario-editor-status"></p>
+    <p style="font-size:12px;color:var(--text-muted);margin:4px 0 0">
+      Edit scenarios directly as JSON. Each scenario needs <code>name</code>, <code>instance</code> (1 or 2), and an <code>actions</code> array
+      with time-ordered entries. Save then Run to execute. Outputs land in <code>runs_out/</code>.
+    </p>
+  </div>
+
+
+  <!-- ═══════════════════════ Failure Injection ═══════════════════════ -->
+  <div class="panel">
+    <h3 class="panel-title">Failure Injection</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Drone</label>
+        <select id="fail-drone">
+          <option value="1">Drone 1</option>
+          <option value="2">Drone 2</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Component</label>
+        <select id="fail-component"><option>loading…</option></select>
+      </div>
+      <div class="form-group">
+        <label>Failure Type</label>
+        <select id="fail-type"><option>loading…</option></select>
+      </div>
+      <div class="form-group">
+        <label>Inst idx</label>
+        <input type="number" id="fail-inst" value="0" min="0" max="3" style="width:60px">
+      </div>
+      <div class="form-group" style="justify-content:flex-end">
+        <label>&nbsp;</label>
+        <div style="display:flex;gap:8px">
+          <button class="danger" onclick="injectFailure()">⚡ Inject</button>
+          <button onclick="clearFailure()">✕ Clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════ Mission Control ═══════════════════════ -->
+  <div class="panel">
+    <h3 class="panel-title">Mission Control</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Scenario</label>
+        <select id="scenario-select" style="min-width:280px"><option>loading…</option></select>
+      </div>
+      <div class="form-group" style="justify-content:flex-end">
+        <label>&nbsp;</label>
+        <button class="primary" onclick="runScenario()">▶ Run Scenario</button>
+      </div>
+    </div>
+    <p style="margin:8px 0 0;font-size:12px;color:var(--text-muted)">
+      Runs via MAVSDK directly. Output CSV and logs written to <code>runs_out/</code> — reload the Log Analysis panel to see them.
+    </p>
+  </div>
+
+
+  <!-- ═══════════════════════ Console ═══════════════════════ -->
+  <div class="panel">
+    <div class="console-header panel-title" style="margin-bottom:0;border:none;padding:0 0 8px">
+      <span>Console Log</span>
+      <button onclick="clearConsole()" style="margin-left:auto">Clear</button>
+    </div>
+    <div class="console-wrap" id="console-log"></div>
+  </div>
+
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

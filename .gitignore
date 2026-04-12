@@ -1,6 +1,9 @@
 # Python
 __pycache__/
 *.pyc
+*.pyo
+.venv/
+venv/
 
 # Outputs
 runs_out/
@@ -10,5 +13,11 @@ runs_out*/
 *.log
 telemetry*.csv
 
+# ROS / Aerostack2 build artifacts
+aerostack2-integration/build/
+aerostack2-integration/install/
+aerostack2-integration/log/
+
 # OS
 .DS_Store
+Thumbs.db
